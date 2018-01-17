@@ -1,2 +1,4 @@
-**/*.blend
 **/*.blend1
+**/*.blend2
+**/hide
+**/node_modules

@@ -1,0 +1,26 @@
+{
+  "name": "cuboid",
+  "version": "1.0.0",
+  "description": "http://pinkbunkadoo.github.io/cuboid/",
+  "main": "index.js",
+  "scripts": {
+    "debugify": "browserify ./src/js/engine.js > ./build/bundle.js -d",
+    "browserify": "browserify ./src/js/engine.js > ./build/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pinkbunkadoo/cuboid.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pinkbunkadoo/cuboid/issues"
+  },
+  "homepage": "https://github.com/pinkbunkadoo/cuboid#readme",
+  "devDependencies": {
+    "browserify": "^15.2.0",
+    "gulp": "^3.9.1",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}
