@@ -1150,7 +1150,9 @@ Engine.onResourceLoad = function(filename) {
     Engine.textures[filename] = Texture.fromImage(res.content);
   }
   if (Resource.done) {
-    Engine.bootup();
+    setTimeout(() => {
+      Engine.bootup()
+    }, 500);
   }
 }
 
@@ -1274,7 +1276,6 @@ Engine.resume = function() {
     for (var i = 0; i < Engine.transitions.length; i++) {
       Engine.transitions[i].start();
     }
-    // console.log('resumed');
   }
 }
 
@@ -1282,7 +1283,6 @@ Engine.stop = function() {
   Engine.active = false;
   cancelAnimationFrame(Engine.frameID);
   Engine.draw();
-  // console.log('paused');
 }
 
 Engine.init = function(width, height, scale) {
