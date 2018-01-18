@@ -1171,7 +1171,8 @@ Engine.bootup = function() {
   Engine.createWorld();
   Engine.initialised = true;
   Engine.first = true;
-  Time.start = performance.now();
+  // Time.start = performance.now();
+  Time.start = Date.now();
   Engine.resume();
 }
 
@@ -1231,34 +1232,24 @@ Engine.update = function()  {
 
 Engine.frame = function(timestamp) {
   if (Engine.active && Resource.done) {
-    // var interval = 1000 / Engine.fps.standard;
-    Time.now = performance.now();
-    // Time.now = timestamp;
+    // Time.now = performance.now();
+    Time.now = Date.now();
     Time.delta = 1000 / (Time.now - Time.then);
 
-    // if (Time.delta >= interval) {
-      Engine.update();
-      Engine.updateTransitions();
-      Engine.draw();
+    Engine.update();
+    Engine.updateTransitions();
+    Engine.draw();
 
-      // Time.then = Time.now - (Time.delta % interval);
-      Engine.fps.average = Engine.fps.average * 0.99 + Time.delta * 0.01;
-    // }
+    Engine.fps.average = Engine.fps.average * 0.99 + Time.delta * 0.01;
 
     Time.count++;
-
-    // if (Engine.fpsEl) {
-    //   if (Time.count % Engine.fps.standard == 0) {
-    //     Engine.fpsEl.innerHTML = Engine.fps.average.toFixed(1);
-    //   }
-    // }
 
     Time.then = Time.now;
     Engine.frameID = requestAnimationFrame(Engine.frame);
 
     Engine.first = false;
   }
-  // Engine.keys = {};
+
   Engine.interact.primaryUp = false;
   Engine.interact.deltaX = 0;
   Engine.interact.deltaY = 0;
@@ -1267,7 +1258,8 @@ Engine.frame = function(timestamp) {
 Engine.resume = function() {
   if (Engine.initialised) {
     Engine.active = true;
-    Time.now = performance.now();
+    // Time.now = performance.now();
+    Time.now = Date.now();
     Time.then = Time.now;
     Time.count = 0;
     Engine.fps.average = Engine.fps.standard;
@@ -1312,12 +1304,16 @@ Engine.init = function(width, height, scale) {
   Engine.createElements();
   Engine.initEventListeners();
   Engine.loadResources();
-
 }
 
-window.onload = function() {
+document.addEventListener( "DOMContentLoaded", function() {
+  document.removeEventListener("DOMContentLoaded", arguments.callee, false);
   Engine.init(320, 200, 3);
-}
+}, false);
+
+// window.onload = function() {
+//   Engine.init(320, 200, 3);
+// }
 
 window.Engine = Engine;
 window.Time = Time;
