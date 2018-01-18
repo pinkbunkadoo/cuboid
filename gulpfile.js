@@ -7,10 +7,10 @@ var fs = require('fs');
 var src = 'app/js/engine.js';
 var dest = './dist';
 
-gulp.task('default', () => {
+function bundle(debug) {
   browserify({
     entries: src,
-    debug: true
+    debug: debug
   })
   .bundle()
   .pipe(source('bundle.js'))
@@ -24,4 +24,14 @@ gulp.task('default', () => {
 
   gulp.src('app/index.html')
     .pipe(gulp.dest(dest));
+}
+
+gulp.task('release', () => {
+  bundle(false)
 });
+
+gulp.task('debug', () => {
+  bundle(true)
+});
+
+gulp.task('default', ['debug']);
