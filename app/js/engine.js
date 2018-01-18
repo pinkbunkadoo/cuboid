@@ -666,9 +666,7 @@ Engine.drawEntities = function() {
       // }
     }
   }
-
 }
-
 
 // Engine.drawTest = function() {
 //   var shade = new Colorf();
@@ -715,7 +713,6 @@ Engine.drawEntities = function() {
 //   // Renderer.setPixel(a.x, a.y, 255, 0, 0, 255);
 // }
 
-
 Engine.swapBuffer = function() {
   // Engine.imageData.data.set(Renderer.surface.buf8);
   // Engine.imageData.data.set(Renderer.surface.buf32);
@@ -744,6 +741,9 @@ Engine.drawOverlay = function() {
 
     ctx.fillStyle = 'rgb(0, 255, 0)';
     ctx.fillText('index: ' + Engine.gridIndex, 10, y + 80);
+
+    ctx.fillStyle = 'rgb(0, 255, 0)';
+    ctx.fillText('tdelta: ' + Time.delta, 10, y + 100);
   }
 
   var text = 'Cuboid v' + version;
@@ -764,9 +764,7 @@ Engine.drawOverlay = function() {
     ctx.fillRect(x, y, 2, 6);
     ctx.fillRect(x + 4, y, 2, 6);
   }
-
 }
-
 
 Engine.draw = function() {
   var ctx = Engine.context;
@@ -804,38 +802,22 @@ Engine.draw = function() {
 
   Engine.swapBuffer();
   Engine.drawOverlay();
-
 }
-
-
-Engine.onBlur = function(event) {
-  Engine.stop();
-}
-
-
-Engine.onFocus = function(event) {
-  Engine.resume();
-}
-
 
 Engine.keyTimeout  = function(key) {
 }
-
 
 Engine.onContextMenu = function(event) {
   event.preventDefault();
 }
 
-
 Engine.onScroll = function(event) {
   event.preventDefault();
 }
 
-
 Engine.onKeyDown = function(event) {
   Engine.keys[event.key] = true;
 }
-
 
 Engine.onKeyUp = function(event) {
   if (event.key == 'ArrowLeft') {
@@ -884,11 +866,9 @@ Engine.onKeyUp = function(event) {
   delete(Engine.keys[event.key]);
 }
 
-
 Engine.beginInteraction = function() {
   var point = new Vector(Engine.interact.x, Engine.interact.y, 0);
 }
-
 
 Engine.updateInteraction = function() {
   var pScreen = new Vector((Engine.interact.x / Engine.scale), (Engine.interact.y / Engine.scale), 0);
@@ -937,32 +917,25 @@ Engine.updateInteraction = function() {
   // Engine.gridId = id;
 }
 
-
 Engine.endInteraction = function() {
   var pRaster = new Vector(Engine.interact.x / Engine.scale, Engine.interact.y / Engine.scale, 0);
-
   if (!Engine.interact.drag) {
     if (Engine.isValidMove(Engine.gridIndex)) {
       Engine.moveTo(Engine.gridIndex);
     }
   }
-
   Engine.interact.primaryUp = true;
 }
-
 
 Engine.processMouseEvent = function(event) {
   Engine.interact.x = event.clientX - Engine.stage.offsetLeft;
   Engine.interact.y = event.clientY - Engine.stage.offsetTop;
-
   Engine.interact.button = event.button;
   Engine.interact.buttons = event.buttons;
 }
 
-
 Engine.onClick = function(event) {
 }
-
 
 Engine.onMouseDown = function(event) {
   Engine.processMouseEvent(event);
@@ -985,7 +958,6 @@ Engine.onMouseDown = function(event) {
   Engine.interact.lastY = Engine.interact.y;
 }
 
-
 Engine.onMouseMove = function(event) {
   Engine.processMouseEvent(event);
 
@@ -996,11 +968,8 @@ Engine.onMouseMove = function(event) {
 
   Engine.interact.lastX = Engine.interact.x;
   Engine.interact.lastY = Engine.interact.y;
-
   // console.log(Engine.interact.deltaX);
-
 }
-
 
 Engine.onMouseUp = function(event) {
   Engine.processMouseEvent(event);
@@ -1015,21 +984,17 @@ Engine.onMouseUp = function(event) {
   Engine.interact.drag = false;
 }
 
-
 Engine.onMouseOut = function(event) {
 }
 
-
 Engine.onMouseOver = function(event) {
 }
-
 
 Engine.processTouchEvent = function(event) {
   Engine.interact.x = event.changedTouches[0].clientX - Engine.stage.offsetLeft;
   Engine.interact.y = event.changedTouches[0].clientY - Engine.stage.offsetTop;
   Engine.interact.primary = true;
 }
-
 
 Engine.onTouchStart = function(event) {
   event.preventDefault();
@@ -1046,7 +1011,6 @@ Engine.onTouchStart = function(event) {
 
 }
 
-
 Engine.onTouchMove = function(event) {
   event.preventDefault();
   Engine.processTouchEvent(event);
@@ -1060,7 +1024,6 @@ Engine.onTouchMove = function(event) {
   Engine.interact.lastY = Engine.interact.y;
 }
 
-
 Engine.onTouchEnd = function(event) {
   event.preventDefault();
   Engine.processTouchEvent(event);
@@ -1073,6 +1036,16 @@ Engine.onTouchEnd = function(event) {
   Engine.interact.primary = false;
 }
 
+Engine.onBlur = function(event) {
+  Engine.stop();
+}
+
+Engine.onFocus = function(event) {
+  Engine.resume();
+}
+
+Engine.onVisibilityChange = function() {
+}
 
 Engine.initEventListeners = function() {
   window.addEventListener('blur', Engine.onBlur);
@@ -1080,12 +1053,13 @@ Engine.initEventListeners = function() {
   window.addEventListener('keydown', Engine.onKeyDown);
   window.addEventListener('keyup', Engine.onKeyUp);
 
-
   Engine.canvas.addEventListener('mousedown', Engine.onMouseDown);
   window.addEventListener('mousemove', Engine.onMouseMove);
   window.addEventListener('mouseup', Engine.onMouseUp);
   window.addEventListener('mouseout', Engine.onMouseOut);
   window.addEventListener('mouseover', Engine.onMouseOver);
+
+  document.addEventListener('visibilitychange', Engine.onVisibilityChange);
 
   Engine.canvas.addEventListener('contextmenu', Engine.onContextMenu);
 
@@ -1093,9 +1067,7 @@ Engine.initEventListeners = function() {
   Engine.stage.addEventListener('touchend', Engine.onTouchEnd);
   Engine.stage.addEventListener('touchmove', Engine.onTouchMove);
 
-  // Engine.canvas.addEventListener('scroll', Engine.onScroll);
 }
-
 
 Engine.createElements = function() {
   Engine.stage = document.getElementById('stage');
@@ -1150,9 +1122,7 @@ Engine.onResourceLoad = function(filename) {
     Engine.textures[filename] = Texture.fromImage(res.content);
   }
   if (Resource.done) {
-    setTimeout(() => {
-      Engine.bootup()
-    }, 500);
+    Engine.bootup();
   }
 }
 
@@ -1165,15 +1135,6 @@ Engine.loadResources = function() {
   for (var i = 0; i < TEXTURES.length; i++) {
     Resource.load(TEXTURES[i]);
   }
-}
-
-Engine.bootup = function() {
-  Engine.createWorld();
-  Engine.initialised = true;
-  Engine.first = true;
-  // Time.start = performance.now();
-  Time.start = Date.now();
-  Engine.resume();
 }
 
 Engine.updateTransitions = function() {
@@ -1227,14 +1188,13 @@ Engine.update = function()  {
   if (Engine.keys['-']) {
     // Engine.entities[0].transform.position.z -= 5 * delta;
   }
-
 }
 
 Engine.frame = function(timestamp) {
   if (Engine.active && Resource.done) {
     // Time.now = performance.now();
     Time.now = Date.now();
-    Time.delta = 1000 / (Time.now - Time.then);
+    Time.delta = (Time.then !== Time.now ? 1000 / (Time.now - Time.then) : 0);
 
     Engine.update();
     Engine.updateTransitions();
@@ -1257,16 +1217,21 @@ Engine.frame = function(timestamp) {
 
 Engine.resume = function() {
   if (Engine.initialised) {
-    Engine.active = true;
-    // Time.now = performance.now();
-    Time.now = Date.now();
-    Time.then = Time.now;
-    Time.count = 0;
-    Engine.fps.average = Engine.fps.standard;
-    Engine.frameID = requestAnimationFrame(Engine.frame);
+    if (!Engine.active) {
+      // console.log('resume', Date.now());
+      Engine.active = true;
+      // Time.now = performance.now();
+      if (Time.start === undefined) Time.start = Date.now();
+      Time.now = Date.now();
+      Time.then = Time.now;
+      Time.count = 0;
+      Engine.fps.average = Engine.fps.standard;
 
-    for (var i = 0; i < Engine.transitions.length; i++) {
-      Engine.transitions[i].start();
+      Engine.frameID = requestAnimationFrame(Engine.frame);
+
+      for (var i = 0; i < Engine.transitions.length; i++) {
+        Engine.transitions[i].start();
+      }
     }
   }
 }
@@ -1277,8 +1242,20 @@ Engine.stop = function() {
   Engine.draw();
 }
 
+Engine.bootup = function() {
+  Engine.initialised = true;
+  Engine.first = true;
+  Engine.createWorld();
+  // Time.start = performance.now();
+  if (!document.hidden) {
+    Engine.resume();
+  }
+}
+
 Engine.init = function(width, height, scale) {
   console.log('init');
+
+  Engine.title = document.title;
 
   Engine.fps = {};
   Engine.fps.standard = 60;
@@ -1306,14 +1283,18 @@ Engine.init = function(width, height, scale) {
   Engine.loadResources();
 }
 
-document.addEventListener( "DOMContentLoaded", function() {
-  document.removeEventListener("DOMContentLoaded", arguments.callee, false);
+function ready() {
   Engine.init(320, 200, 3);
-}, false);
+}
 
-// window.onload = function() {
-//   Engine.init(320, 200, 3);
-// }
+if (document.addEventListener) {
+  document.addEventListener('DOMContentLoaded', function() {
+    document.removeEventListener('DOMContentLoaded', arguments.callee, false);
+    ready();
+  }, false);
+} else {
+  ready();
+}
 
 window.Engine = Engine;
 window.Time = Time;
