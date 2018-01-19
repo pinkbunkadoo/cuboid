@@ -1090,7 +1090,7 @@ Engine.createElements = function() {
   }
 
   Engine.canvas = document.createElement('canvas');
-  Engine.canvas.style.backgroundColor = 'green';
+  Engine.canvas.style.backgroundColor = 'rgb(0, 0, 32)';
   Engine.canvas.id = 'surface';
   Engine.canvas.width = Engine.width * Engine.scale;
   Engine.canvas.height = Engine.height * Engine.scale;
